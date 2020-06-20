@@ -8,12 +8,18 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///relationships.db'
 db = SQLAlchemy(app)
 
+#Apparently I need this to run db.create_all() without problems 😅
 from Models import User, Tweet
 
 
 @app.route('/')
 def index():
-    return render_template("index.html")
+    loggedIn = False
+    return render_template("index.html", logStatus=loggedIn)
+
+@app.route('/LogIn')
+def logIn():
+    return render_template("logIn.html")
 
 
 # snippet to fix static files not updating

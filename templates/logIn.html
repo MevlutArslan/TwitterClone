@@ -1,0 +1,24 @@
+{% extends "./base.html" %}
+
+{% block body %}
+<div class="container">
+    <br>
+    <br>
+    <div class="container">
+        <h5>Log In</h5>
+        <p>Please enter your credientials to Log In</p>
+        <form>
+            <label for="userHandle">Personal Handle</label>
+            <input type="text" name="userHandle" placeholder="johnDoe12">
+
+            <label for="password">Password</label>
+            <input type="password" name="password" placeholder="Martha12.,!">
+
+            <button class="btn waves-effect waves-light" type="submit" name="action">Log In</button>
+        </form>
+        <p>Dont have an account? Create one.</p>
+        <a href="/"><button class="btn waves-effect waves-light">Create Account</button></a>
+
+    </div>
+</div>
+{%endblock%}
