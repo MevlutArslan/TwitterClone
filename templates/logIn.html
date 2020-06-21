@@ -7,7 +7,8 @@
     <div class="container">
         <h5>Log In</h5>
         <p>Please enter your credientials to Log In</p>
-        <form>
+        <form action="/LogIn" method="POST">
+            <p>{{thrownError}}</p>
             <label for="userHandle">Personal Handle</label>
             <input type="text" name="userHandle" placeholder="johnDoe12">
 

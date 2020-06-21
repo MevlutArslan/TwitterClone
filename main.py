@@ -1,15 +1,19 @@
-from flask import Flask, url_for, render_template, request, redirect
+from flask import Flask, url_for, render_template, request, redirect, session
 # Response,redirect
 import os
+import uuid
 from flask_sqlalchemy import SQLAlchemy
 
 
 app = Flask(__name__)
+SESSION_TYPE = 'filesystem'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///relationships.db'
+app.config['SECRET_KEY'] = uuid.uuid4().hex
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-logInStatus = False
+# session["logInStatus"] = False
+# session["loggedUser"] = None
 
 # Apparently I need this to run db.create_all() without problems 😅
 # from Models import User, Tweet
@@ -18,12 +22,31 @@ from Models import User
 
 @app.route('/')
 def index():
-    return render_template("index.html", logStatus=logInStatus)
+    if session['loggedUserHandle'] != None:
+        print(session["loggedUserHandle"])
+        return render_template("index.html", logStatus=session["logInStatus"], loggedAccount=session["loggedUserHandle"])
+    return render_template("index.html", logStatus=session["logInStatus"])
 
 
-@app.route('/LogIn')
+@app.route('/LogIn', methods=["GET", "POST"])
 def logIn():
-    return render_template("logIn.html")
+    error = ""
+    if request.method == "POST":
+        userHandle = request.form["userHandle"]
+        password = request.form["password"]
+
+        userInDatabase = User.query.filter_by(userHandle=userHandle).first()
+        print(userInDatabase)
+        if(userInDatabase != None):
+            if(userInDatabase.password == password):
+                session["logInStatus"] = True
+                session["loggedUserHandle"] = userInDatabase.userHandle
+                return redirect("/")
+            else:
+                error = "Wrong Password!"
+        else:
+            error = "Wrong Handle"
+    return render_template("logIn.html", thrownError=error)
 
 
 @app.route('/CreateAccount', methods=["GET", "POST"])
@@ -51,9 +74,6 @@ def dated_url_for(endpoint, **values):
             file_path = os.path.join(app.root_path, endpoint, filename)
             values['q'] = int(os.stat(file_path).st_mtime)
     return url_for(endpoint, **values)
-
-
-
 
 
 if __name__ == "__main__":
