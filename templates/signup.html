@@ -1,0 +1,37 @@
+{% extends "./base.html" %}
+
+{% block body %}
+
+<div class="container">
+    <br>
+    <br>
+    <div class="container">
+        <h5>Welcome To Twitter Clone</h5>
+        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
+            Dolorum, excepturi fugiat dignissimos dolores, 
+            libero sit officiis soluta possimus nemo quos quisquam? 
+            Debitis corrupti doloremque aliquid qui natus provident sapiente culpa?
+        </p>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <!-- <script>alert(" {{ messages[0] }}")</script> -->
+            {{ messages[0] }}. Go to <a href="{{ url_for('auth.login') }}">login page</a>
+        {% endif %}
+        {% endwith %}
+        <form action="/signup" method="POST">
+            <label for="userHandle">Personal Handle (Has to be unique)</label>
+            <input type="text" name="userHandle" placeholder="johnDoe12">
+
+            <label for="password">Password</label>
+            <input type="password" name="password" placeholder="Martha12.,!">
+
+            <label for="displayName">Display name</label>
+            <input type="text" name="displayName" placeholder="John Doe">
+
+            <button class="btn waves-effect waves-light" type="submit" name="action">Create Account</button>
+        </form>
+    </div>
+</div>
+
+{%endblock%}

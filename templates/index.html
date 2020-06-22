@@ -1,29 +1,8 @@
 {% extends "./base.html" %}
 
 
-{% block loggedOut %}
-
-{% if logStatus == false %}
-    <div class="loggedIn">
-        <li><a href="/LogIn">Log In</a></li>
-    </div>
-{% endif %}
-
-{%endblock%}
-
-{% block loggedIn %}
-{% if logStatus == true %}
-<div class="loggedIn">
-    <li><a href="collapsible.html">My Profile</a></li>
-    <li><a href="collapsible.html">Log Out</a></li>
-</div>
-{% endif %}
-
-{%endblock%}
-
 {% block body %}
 
-{% if logStatus == false %}
 <div class="container">
     <br>
     <br>
@@ -34,20 +13,11 @@
             libero sit officiis soluta possimus nemo quos quisquam? 
             Debitis corrupti doloremque aliquid qui natus provident sapiente culpa?
         </p>
-        <form action="/CreateAccount" method="POST">
-            <label for="userHandle">Personal Handle (Has to be unique)</label>
-            <input type="text" name="userHandle" placeholder="johnDoe12">
 
-            <label for="password">Password</label>
-            <input type="password" name="password" placeholder="Martha12.,!">
+        <br>
+        <br>
 
-            <label for="displayName">Display name</label>
-            <input type="text" name="displayName" placeholder="John Doe">
-
-            <button class="btn waves-effect waves-light" type="submit" name="action">Create Account</button>
-        </form>
     </div>
 </div>
-{% endif %}
 
 {%endblock%}

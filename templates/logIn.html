@@ -7,7 +7,13 @@
     <div class="container">
         <h5>Log In</h5>
         <p>Please enter your credientials to Log In</p>
-        <form action="/LogIn" method="POST">
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {{ messages[0] }}
+        {% endif %}
+        {% endwith %}
+        <form action="/login" method="POST">
             <p>{{thrownError}}</p>
             <label for="userHandle">Personal Handle</label>
             <input type="text" name="userHandle" placeholder="johnDoe12">
@@ -18,7 +24,7 @@
             <button class="btn waves-effect waves-light" type="submit" name="action">Log In</button>
         </form>
         <p>Dont have an account? Create one.</p>
-        <a href="/"><button class="btn waves-effect waves-light">Create Account</button></a>
+        <a href="/signup"><button class="btn waves-effect waves-light">Create Account</button></a>
 
     </div>
 </div>
