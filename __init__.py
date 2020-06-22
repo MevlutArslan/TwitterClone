@@ -33,6 +33,6 @@ def create_app():
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
-    db.create_all(app=app)
+    # db.create_all(app=app)
 
     return app
