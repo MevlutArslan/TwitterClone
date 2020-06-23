@@ -3,6 +3,8 @@ from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import User
 from flask_login import login_user, logout_user, login_required
+import os
+
 
 auth = Blueprint('auth', __name__)
 
@@ -50,6 +52,8 @@ def signup_post():
     # add the new user to the database
     db.session.add(new_user)
     db.session.commit()
+
+    os.mkdir("user_media/"+user_handle)
 
     return redirect(url_for('auth.login'))
 

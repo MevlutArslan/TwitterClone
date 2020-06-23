@@ -3,13 +3,18 @@
 
 {%block nav_links%}
 
-<li><a href="collapsible.html">My Profile</a></li>
+<li><a href="collapsible.html">Profile</a></li>
 <li><a href="/logout">Log Out</a></li>
 
 {%endblock%}
 
 {%block body%}
-
-<p>Welcome {{user.user_handle}}</p>
-
+<div class="container-fluid">
+    <div class="sidebar">
+        <img style="height:50px;width:50px;" class="circle" src= "../static/{{user.profile_picture_url}}">
+    </div>
+    <div class="content">
+      <p>Welcome user {{user.user_handle}}</p>
+    </div>
+  </div>
 {%endblock%}

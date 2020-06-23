@@ -9,8 +9,8 @@ class User(UserMixin, db.Model):
     user_handle = db.Column(db.String(15), unique=True)
     display_name = db.Column(db.String(30), nullable=False)
     password = db.Column(db.String(20), nullable=False)
+    profile_picture_url = db.Column(db.String(100), nullable=True, default="media/default_egg.png")
     tweets = db.relationship('Tweet', backref="owner")
-    # profile_picture_url = Column(String(200), nullable=True)
 
 
 class Tweet(db.Model):

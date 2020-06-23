@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
     <!-- Compiled and minified CSS -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-
     <title>Twitter Clone</title>
     {% block head %}
     {% endblock %}
@@ -18,9 +18,9 @@
         <div class="nav-wrapper">
             <a href="/" class="brand-logo">Twitter Clone</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                {% block nav_links %}
-                
-                {% endblock %}
+                {%block nav_links %}
+
+                {%endblock%}
             </ul>
         </div>
     </nav>

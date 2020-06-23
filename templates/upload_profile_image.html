@@ -1,0 +1,21 @@
+{% extends "./base.html" %}
+
+{% block body %}
+
+<br>
+<br>
+
+<div class="container">
+    <br>
+    <br>
+    <form action="upload_profile_picture" method="POST" enctype="multipart/form-data">
+        <label for="upload_picture">Please upload your desired profile picture! (PNG, JPEG, JPG) </label>
+        <br>
+        <input type="file" name="upload_picture">
+
+        <br>
+        <button type="submit">Upload Picture</button>
+    </form>
+</div>
+
+{%endblock%}
