@@ -46,6 +46,9 @@ def create_app():
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
+    from .tweet import tweet_related as tweet_blueprint
+    app.register_blueprint(tweet_blueprint)
+
     # db.create_all(app=app)
 
     return app

@@ -17,10 +17,10 @@ def index():
     return render_template("index.html")
 
 
-@main.route('/explore')
+@main.route('/logged_index')
 @login_required
-def explore():
-    return render_template('explore.html', user=current_user)
+def logged_index():
+    return render_template('logged_index.html', user=current_user)
 
 
 @main.route('/upload_profile_picture', methods=["GET", "POST"])

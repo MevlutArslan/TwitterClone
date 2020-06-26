@@ -26,7 +26,7 @@ def login_post():
         return redirect(url_for('auth.login'))
 
     login_user(user)
-    return redirect(url_for('main.explore'))
+    return redirect(url_for('main.logged_index'))
 
 
 @auth.route('/signup')
