@@ -18,5 +18,6 @@ class Tweet(db.Model):
 
     id = db.Column(db.Integer, unique=True, primary_key=True)
     tweet_owner_id = db.Column(db.String(15), db.ForeignKey('user.id'))
+    # tweet_owner_handle = db.relationship('User')
     text = db.Column(db.String(140), nullable=False)
     likes = db.Column(db.Integer)
