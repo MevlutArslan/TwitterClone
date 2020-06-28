@@ -17,6 +17,7 @@ def create_app():
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     app.config['SECRET_KEY'] = uuid.uuid4().hex
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///relationships.db'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)
 
