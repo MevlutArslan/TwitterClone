@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+
+<style>
+    .profile_picture {
+        padding-top: 20px;
+        width: 100px;
+        height: 100px;
+      }
+</style>
+
+{% endblock %}
+
+{%block body%}
+
+
+
+<div class="container">
+    <div class="thumbnail">
+        <!-- <img src="../{{user.profile_picture_url}}"> -->
+        <!-- Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum ratione veritatis deleniti quisquam accusamus molestiae a fugiat reiciendis nemo consectetur esse, odio placeat ut repellat dolore accusantium rem. Animi, quasi. -->
+    </div>
+    <div class="profile_main">
+        <img>
+        <img class="profile_picture" src="../static/{{user.profile_picture_url}}">
+        <a href="/upload_profile_picture"><i class="material-icons">mode_edit</i></a>
+        <h5>{{user.display_name}}</h5>
+        <span>@{{user.user_handle}}</span>
+        <div class="biography">
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
+                Nesciunt saepe optio quia debitis facere placeat soluta ab sint voluptates quos 
+                vero accusantium temporibus quod doloremque, 
+                facilis nam rerum adipisci dicta!
+            </p>
+        </div>
+    </div>
+    <div class="profile_tabs">
+        <div class="row">
+        <ul class="tabs">
+            <li class="tab col s3"><a class="active" href="#tweets">Tweets</a></li>
+            <li class="tab col s3"><a href="#liked_tweets">Likes</a></li>
+            <li class="tab col s3"><a href="#media">Media</a></li>
+        </ul>
+
+        <div id="tweets" class="col s12">
+            {% for tweet in tweets %}
+            <!-- fill with tweet card design -->
+            <p>{{tweet.text}}</p>
+            
+            {%endfor%}
+        </div>
+        <div id="liked_tweets" class="col s12">
+            <h5>liked tweets</h5>
+            <!-- {% for tweet in liked_tweets %} -->
+            <!-- fill with tweet card design -->
+            <!-- {%endfor%} -->
+        </div>
+        <div id="media" class="col s12">
+            <h5>media</h5>
+            <!-- {% for media in user_media %} -->
+            <!-- fill with tweet card design -->
+            <!-- {%endfor%} -->
+        </div>
+    </div>
+</div>
+
+<!-- MaterializeCSS tabs javascript activation -->
+<script>
+    window.addEventListener("DOMContentLoaded", event => {
+        const options = {
+          duration: 300,
+          onShow: null,
+          swipeable: false,
+          responsiveThreshold: Infinity
+        };
+      
+        const tabsContainer = document.querySelector(".tabs");
+        M.Tabs.init(tabsContainer, options);
+    })
+</script>
+
+{%endblock%}

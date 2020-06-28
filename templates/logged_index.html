@@ -57,6 +57,26 @@
   text-decoration: none;
   cursor: pointer;
 }
+
+
+.tweet_interactions{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  align-items: center;
+}
+
+.tweet_interactions li{
+  float: left;
+}
+
+.tweet_interactions li a{
+  display: block;
+  text-align: center;
+  padding: 16px;
+  text-decoration: none;
+}
 </style>
 
 {%endblock%}
@@ -81,7 +101,7 @@
     <span class="close">&times;</span>
     <form method="POST" action="/tweet">
       <label for="tweet_text">Tweet</label>
-      <textarea id="tweet_input" name="tweet_text" maxlength="140"></textarea>
+      <textarea class="materialize-textarea" id="tweet_input" name="tweet_text" maxlength="140"></textarea>
       <div id="textarea_feedback"></div>
       <button type="submit">Post Tweet</button>
     </form>
@@ -95,34 +115,43 @@
 
   <div class="col s3" style="height: 60vh;
                               width: 20vw;
-                              box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
                               margin-left:1%;
                               margin-right:0.7%">
     <div class="row">
       <div class="profile_visual_summary">
-        <h5 style="margin-top: 1%;">{{user.display_name}}</h5>
+        <br>
         <img class="profile_picture" src="../static/{{user.profile_picture_url}}">
-        <a href="/profile"><p style="margin: 0;padding:0;">@{{user.user_handle}}</p></a>
+        <h5 style="margin-top: 1%;">{{user.display_name}}</h5>
+        <a href="/profile/{{user.user_handle}}"><p style="margin: 0;padding:0;">@{{user.user_handle}}</p></a>
       </div>
-    </div>
-    <div class="row">
-      <a><button style="width: 100%; text-align:left;" class="btn waves-effect waves-light">My Profile</button></a>
-    </div>
-    <div class="row">
-      <a style="z-index: -1;"><button style="width: 100%; text-align:left;" class="btn waves-effect waves-light">My Account</button></a>
     </div>
   </div>
 
-  <div class="col s9" style="background-color: teal;
+  <div class="col s9" style="background-color: whitesmoke;
                               height:auto;
                               width:60vw;
                               box-shadow: 0px 3px 15px rgba(0,0,0,0.2);">
-    <h2>hdabdjbasaghd</h2>
+    {% for tweet in tweets %}
+    <div class="row">
+      <div class="col s12 m6">
+        <div class="card blue-grey darken-1">
+          <div class="card-content white-text">
+            <span class="card-title">{{tweet.tweet_owner_id}}</span>
+            <p>{{tweet.text}}</p>
+          </div>
+          <div class="card-action">
+            <a><i class="material-icons">reply</i></a>
+            <a><i class="material-icons">repeat</i></a>
+            <a><i class="material-icons">favorite</i><span>{{tweet.likes}}</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {%endfor%}
   </div>
 
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <!-- Managing the modal for posting tweets -->
 <script>
   // Get the modal

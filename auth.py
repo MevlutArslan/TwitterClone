@@ -26,7 +26,7 @@ def login_post():
         return redirect(url_for('auth.login'))
 
     login_user(user)
-    return redirect(url_for('main.logged_index'))
+    return redirect(url_for('main.index'))
 
 
 @auth.route('/signup')
@@ -53,7 +53,7 @@ def signup_post():
     db.session.add(new_user)
     db.session.commit()
 
-    os.mkdir("user_media/"+user_handle)
+    os.mkdir("./static/user_media/"+user_handle)
 
     return redirect(url_for('auth.login'))
 
