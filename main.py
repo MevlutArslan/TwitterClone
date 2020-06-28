@@ -48,11 +48,6 @@ def user_profile(user_handle):
     return render_template('profile.html', user=target_user, tweets=tweets)
 
 
-# @main.route('/profile/<user_handle>/tweets')
-# def user_profile_tweets(user_handle):
-
-#     return render_template('profile.html', user=target_user, tweets=)
-
 def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS

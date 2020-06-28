@@ -33,10 +33,12 @@ def view_tweet_details(tweet_id):
 
 
 @tweet_related.route('/delete_tweet/<tweet_id>', methods=["POST"])
+@login_required
 def delete_tweet(tweet_id):
     to_delete = Tweet.query.filter_by(id=tweet_id).first()
-    db.session.delete(to_delete)
-    db.session.commit()
+    if to_delete.tweet_owner_id == current_user.id:
+        db.session.delete(to_delete)
+        db.session.commit()
 
     return redirect(url_for("main.index"))
 
