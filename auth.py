@@ -4,7 +4,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from .models import User
 from flask_login import login_user, logout_user, login_required, current_user
 import os
-
+import shutil
+from pathlib import Path
 
 auth = Blueprint('auth', __name__)
 
@@ -71,6 +72,8 @@ def delete_account(user_id):
     target_user = User.query.filter_by(id=user_id).first()
 
     if (target_user.id == current_user.id):
+        shutil.rmtree("./static/user_media/"+current_user.user_handle)
+
         db.session.delete(target_user)
         db.session.commit()
 
