@@ -14,7 +14,8 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 @main.route('/')
 def index():
     if current_user.is_authenticated:
-        return render_template('logged_index.html', user=current_user)
+        all_tweets = Tweet.query.all()
+        return render_template('logged_index.html', user=current_user, tweets=all_tweets)
     else:
         return render_template("index.html")
 
