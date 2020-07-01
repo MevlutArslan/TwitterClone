@@ -14,9 +14,7 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 @main.route('/')
 def index():
     if current_user.is_authenticated:
-        user = User.query.filter_by(id=current_user.id).first()
-        tweets = user.tweets
-        return render_template('logged_index.html', user=current_user, tweets=tweets)
+        return render_template('logged_index.html', user=current_user)
     else:
         return render_template("index.html")
 
@@ -44,8 +42,7 @@ def upload_profile_picture():
 @main.route('/profile/<user_handle>')
 def user_profile(user_handle):
     target_user = User.query.filter_by(user_handle=user_handle).first()
-    tweets = Tweet.query.filter_by(tweet_owner_id=target_user.id)
-    return render_template('profile.html', user=target_user, tweets=tweets)
+    return render_template('profile.html', user=target_user)
 
 
 def allowed_file(filename):

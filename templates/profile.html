@@ -9,13 +9,17 @@
         width: 100px;
         height: 100px;
       }
+
+      #tweet_profile_picture{
+        border-radius: 50%;
+        height: 30px;
+        width: 30px;
+      }
 </style>
 
 {% endblock %}
 
 {%block body%}
-
-
 
 <div class="container">
     <div class="thumbnail">
@@ -49,21 +53,27 @@
         </ul>
 
         <div id="tweets" class="col s12">
-            {% for tweet in tweets %}
+            {% for tweet in user.tweets %}
             <div class="row">
                 <div class="col s12 m6">
                   <div class="card blue-grey darken-1">
                     <div class="card-content white-text">
-                      <span class="card-title">{{user.user_handle}} 
+                      <span class="card-title"><img id="tweet_profile_picture" src="../static/{{user.profile_picture_url}}"> {{user.display_name}} 
                           <form action="/delete_tweet/{{tweet.id}}" method="POST">
                           <button type="submit"><i class="material-icons">delete</i></button>
-                        </form></span>
+                        </form>
+                      </span>
+                      <span style="color: lightcyan;">@{{user.user_handle}}</span>
                       <p>{{tweet.text}}</p>
                     </div>
                     <div class="card-action">
                       <a><i class="material-icons">reply</i></a>
                       <a><i class="material-icons">repeat</i></a>
-                      <a><i class="material-icons">favorite</i><span>{{tweet.likes}}</span></a>
+                      {% if user.has_liked_tweet(tweet) %}
+                      <a href="{{ url_for('tweet_related.like_tweet', tweet_id=tweet.id, action='unlike') }}"><i class="material-icons">favorite</i><span>{{tweet.likes}}</span></a>
+                      {% else %}
+                      <a href="{{ url_for('tweet_related.like_tweet', tweet_id=tweet.id, action='like') }}"><i class="material-icons">favorite_border</i><span>{{tweet.likes}}</span></a>
+                      {% endif %}
                     </div>
                   </div>
                 </div>

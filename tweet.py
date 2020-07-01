@@ -19,7 +19,7 @@ def post_tweet():
     tweet_text = request.form.get("tweet_text")
 
     if tweet_text != "":
-        db.session.add(Tweet(tweet_owner_id=tweet_owner, text=tweet_text, likes=0))
+        db.session.add(Tweet(tweet_owner_id=tweet_owner, text=tweet_text))
         db.session.commit()
 
     return redirect(url_for("main.index"))
@@ -43,7 +43,14 @@ def delete_tweet(tweet_id):
     return redirect(url_for("main.index"))
 
 
-# @tweet_related.route('/like',methods=["POST"])
-# @login_required
-# def like_tweet():
-    
+@tweet_related.route('/like/<int:tweet_id>/<action>')
+@login_required
+def like_tweet(tweet_id, action):
+    tweet = Tweet.query.get(tweet_id)
+    if action == "like":
+        current_user.like_tweet(tweet)
+        db.session.commit()
+    else:
+        current_user.unlike_tweet(tweet)
+        db.session.commit()
+    return redirect('/')
