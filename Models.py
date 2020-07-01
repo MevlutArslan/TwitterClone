@@ -37,6 +37,7 @@ class Tweet(db.Model):
     id = db.Column(db.Integer, unique=True, primary_key=True)
     tweet_owner_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
     text = db.Column(db.String(140), nullable=False)
+    likes = db.relationship('LikeTweet', backref='tweet', lazy='dynamic')
 
 
 class LikeTweet(db.Model):

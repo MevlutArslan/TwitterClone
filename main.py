@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 from . import db
 import os
-from .models import User, Tweet
+from .models import User, Tweet, LikeTweet
 
 main = Blueprint('main', __name__)
 
@@ -42,7 +42,9 @@ def upload_profile_picture():
 @main.route('/profile/<user_handle>')
 def user_profile(user_handle):
     target_user = User.query.filter_by(user_handle=user_handle).first()
-    return render_template('profile.html', user=target_user)
+    liked_tweets = LikeTweet.query.filter_by(liked_by=target_user.id).all()
+    
+    return render_template('profile.html', user=target_user, liked=liked_tweets)
 
 
 def allowed_file(filename):

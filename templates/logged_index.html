@@ -131,6 +131,7 @@
                               height:auto;
                               width:60vw;
                               box-shadow: 0px 3px 15px rgba(0,0,0,0.2);">
+    <!-- user = Current user -->
     {% for tweet in user.tweets %}
     <div class="row">
       <div class="col s12 m6">
@@ -143,9 +144,9 @@
             <a><i class="material-icons">reply</i></a>
             <a><i class="material-icons">repeat</i></a>
             {% if user.has_liked_tweet(tweet) %}
-            <a href="{{ url_for('tweet_related.like_tweet', tweet_id=tweet.id, action='unlike') }}"><i class="material-icons">favorite</i><span>{{tweet.likes}}</span></a>
+            <a href="{{ url_for('tweet_related.like_tweet', tweet_id=tweet.id, action='unlike') }}"><i class="material-icons">favorite</i><span>{{tweet.likes.count()}}</span></a>
             {% else %}
-            <a href="{{ url_for('tweet_related.like_tweet', tweet_id=tweet.id, action='like') }}"><i class="material-icons">favorite_border</i><span>{{tweet.likes}}</span></a>
+            <a href="{{ url_for('tweet_related.like_tweet', tweet_id=tweet.id, action='like') }}"><i class="material-icons">favorite_border</i><span>{{tweet.likes.count()}}</span></a>
             {% endif %}
           </div>
         </div>
