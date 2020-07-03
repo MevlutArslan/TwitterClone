@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 from . import db
 import os
 from .models import User, Tweet, LikeTweet
+from sqlalchemy import desc
 
 main = Blueprint('main', __name__)
 
@@ -14,7 +15,7 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 @main.route('/')
 def index():
     if current_user.is_authenticated:
-        all_tweets = Tweet.query.all()
+        all_tweets = Tweet.query.order_by(Tweet.date.desc()).all()
         return render_template('logged_index.html', user=current_user, tweets=all_tweets)
     else:
         return render_template("index.html")
@@ -44,10 +45,28 @@ def upload_profile_picture():
 def user_profile(user_handle):
     target_user = User.query.filter_by(user_handle=user_handle).first()
     liked_tweets = LikeTweet.query.filter_by(liked_by=target_user.id).all()
-    
+
     return render_template('profile.html', user=target_user, liked=liked_tweets)
 
 
 def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@main.route('/follow/<user_id>')
+@login_required
+def follow_user(user_id):
+    referrer = request.headers.get("Referer")
+
+    target_user = User.query.filter_by(id=user_id).first()
+    print(target_user)
+
+    if current_user.is_following(target_user):
+        current_user.unfollow(target_user)
+        db.session.commit()
+    else:
+        current_user.follow(target_user)
+        db.session.commit()
+
+    return redirect(referrer)

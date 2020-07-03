@@ -47,10 +47,11 @@ def delete_tweet(tweet_id):
 @login_required
 def like_tweet(tweet_id, action):
     tweet = Tweet.query.get(tweet_id)
+    referrer = request.headers.get("Referer")
     if action == "like":
         current_user.like_tweet(tweet)
         db.session.commit()
     else:
         current_user.unlike_tweet(tweet)
         db.session.commit()
-    return redirect('/')
+    return redirect(referrer)
