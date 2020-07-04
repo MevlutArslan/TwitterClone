@@ -17,8 +17,11 @@ def login():
 
 @auth.route('/login', methods=["POST"])
 def login_post():
+    referrer = request.headers.get("Referer")
+    
     user_handle = request.form.get('userHandle')
     password = request.form.get('password')
+    
 
     user = User.query.filter_by(user_handle=user_handle).first()
 

@@ -15,6 +15,7 @@ def tweet():
 @tweet_related.route('/tweet', methods=["POST"])
 @login_required
 def post_tweet():
+    referrer = request.headers.get("Referer")
     tweet_owner = current_user.id
     tweet_text = request.form.get("tweet_text")
 
@@ -22,7 +23,7 @@ def post_tweet():
         db.session.add(Tweet(tweet_owner_id=tweet_owner, text=tweet_text))
         db.session.commit()
 
-    return redirect(url_for("main.index"))
+    return redirect(referrer)
 
 
 @tweet_related.route('/tweet/<tweet_id>', methods=["GET"])

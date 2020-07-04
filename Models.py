@@ -57,6 +57,7 @@ class User(UserMixin, db.Model):
             return self
 
     def is_following(self, user):
+        print(user)
         return self.followed.filter(followers.c.followed_id == user.id).count() > 0
 
 
@@ -76,5 +77,3 @@ class LikeTweet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     liked_by = db.Column(db.Integer(), db.ForeignKey('user.id'))
     liked_tweet = db.Column(db.Integer(), db.ForeignKey('tweet.id'))
-
-

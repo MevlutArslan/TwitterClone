@@ -4,139 +4,213 @@
 {% block head %}
 
 <style>
-    .profile_picture {
-        padding-top: 20px;
-        width: 100px;
-        height: 100px;
-      }
+  .profile_picture {
+    padding-top: 20px;
+    width: 100px;
+    height: 100px;
+  }
 
-      #tweet_profile_picture{
-        border-radius: 50%;
-        height: 30px;
-        width: 30px;
-      }
+  #tweet_profile_picture {
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+  }
 </style>
 
 {% endblock %}
 
 {%block body%}
 
-<div class="container">
-    <div class="thumbnail">
-        <!-- <img src="../{{user.profile_picture_url}}"> -->
-        <!-- Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum ratione veritatis deleniti quisquam accusamus molestiae a fugiat reiciendis nemo consectetur esse, odio placeat ut repellat dolore accusantium rem. Animi, quasi. -->
-    </div>
-    <div class="profile_main">
-        <img>
-        <img class="profile_picture" src="../static/{{user.profile_picture_url}}">
-        <a href="/upload_profile_picture"><i class="material-icons">mode_edit</i></a>
-        <h5>{{user.display_name}}</h5>
-        <span>@{{user.user_handle}} 
-            <form action="/delete_account/{{user.id}}" method="POST">
-                <button type="submit"><i class="material-icons">delete</i></button>
-              </form>
-        </span>
-        <div class="biography">
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
-                Nesciunt saepe optio quia debitis facere placeat soluta ab sint voluptates quos 
-                vero accusantium temporibus quod doloremque, 
-                facilis nam rerum adipisci dicta!
-            </p>
-        </div>
-    </div>
-    <div class="profile_tabs">
-        <div class="row">
-        <ul class="tabs">
-            <li class="tab col s3"><a class="active" href="#tweets">Tweets</a></li>
-            <li class="tab col s3"><a href="#liked_tweets">Likes</a></li>
-            <li class="tab col s3"><a href="#media">Media</a></li>
-        </ul>
-
-        <div id="tweets" class="col s12">
-          <!-- user = <user_handle> -->
-            {% for tweet in user.tweets %}
-            <div class="row">
-                <div class="col s12 m6">
-                  <div class="card blue-grey darken-1">
-                    <div class="card-content white-text">
-                      <span class="card-title"><img id="tweet_profile_picture" src="../static/{{user.profile_picture_url}}"> {{tweet.owner.display_name}} 
-                          <form action="/delete_tweet/{{tweet.id}}" method="POST">
-                          <button type="submit"><i class="material-icons">delete</i></button>
-                        </form>
-                      </span>
-                      <span style="color: lightcyan;">@{{tweet.owner.user_handle}}</span>
-                      <p>{{tweet.text}}</p>
-                    </div>
-                    <div class="card-action">
-                      <a><i class="material-icons">reply</i></a>
-                      <a><i class="material-icons">repeat</i></a>
-
-                      {% if user.has_liked_tweet(tweet) %}
-                      <a href="{{ url_for('tweet_related.like_tweet', tweet_id=tweet.id, action='unlike') }}"><i class="material-icons">favorite</i><span>{{tweet.likes.count()}}</span></a>
-                      {% else %}
-                      <a href="{{ url_for('tweet_related.like_tweet', tweet_id=tweet.id, action='like') }}"><i class="material-icons">favorite_border</i><span>{{tweet.likes.count()}}</span></a>
-                      {% endif %}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            {%endfor%}
-        </div>
-        <div id="liked_tweets" class="col s12">
-            {% for tweet in liked %}
-            <div class="row">
-              <div class="col s12 m6">
-                <div class="card blue-grey darken-1">
-                  <div class="card-content white-text">
-                    <span class="card-title"><img id="tweet_profile_picture" src="../static/{{tweet.tweet.owner.profile_picture_url}}"> {{tweet.tweet.owner.display_name}} 
-                        <form action="/delete_tweet/{{tweet.id}}" method="POST">
-                        <button type="submit"><i class="material-icons">delete</i></button>
-                      </form>
-                    </span>
-                    <span style="color: lightcyan;">@{{tweet.tweet.owner.user_handle}}</span>
-                    <p>{{tweet.tweet.text}}</p>
-                  </div>
-                  <div class="card-action">
-                    <a><i class="material-icons">reply</i></a>
-                    <a><i class="material-icons">repeat</i></a>
-                    {% if user.has_liked_tweet(tweet.tweet) %}
-                    <a href="{{ url_for('tweet_related.like_tweet', tweet_id=tweet.tweet.id, action='unlike') }}"><i class="material-icons">favorite</i><span>{{tweet.tweet.likes.count()}}</span></a>
-                    {% else %}
-                    <a href="{{ url_for('tweet_related.like_tweet', tweet_id=tweet.tweet.id, action='like') }}"><i class="material-icons">favorite_border</i><span>{{tweet.tweet.likes.count()}}</span></a>
-                    {% endif %}
-                  </div>
-                </div>
-              </div>
-            </div>
-            {%endfor%}
-        </div>
-        <div id="media" class="col s12">
-            <h5>media</h5>
-            <!-- {% for media in user_media %} -->
-            <!-- fill with tweet card design -->
-            <!-- {%endfor%} -->
-        </div>
-    </div>
+<div class="fixed-action-btn">
+  <button id="myBtn" class="btn-floating btn-large red modal-trigger" data-target="#modal1">
+    <i class="large material-icons">✍️</i>
+  </button>
 </div>
 
-<!-- Delete tweet js function -->
-<script>
 
-</script>
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <form method="POST" action="/tweet">
+      <label for="tweet_text">Tweet</label>
+      <textarea class="materialize-textarea" id="tweet_input" name="tweet_text" maxlength="140"></textarea>
+      <div id="textarea_feedback"></div>
+      <button type="submit">Post Tweet</button>
+    </form>
+  </div>
 
-<!-- MaterializeCSS tabs javascript activation -->
-<script>
+</div>
+
+<div class="container">
+  <div class="thumbnail">
+    <!-- <img src="../{{user.profile_picture_url}}"> -->
+    <!-- Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum ratione veritatis deleniti quisquam accusamus molestiae a fugiat reiciendis nemo consectetur esse, odio placeat ut repellat dolore accusantium rem. Animi, quasi. -->
+  </div>
+  <div class="profile_main">
+    <img>
+    <img class="profile_picture" src="../static/{{user.profile_picture_url}}">
+    <a href="/upload_profile_picture"><i class="material-icons">mode_edit</i></a>
+    <h5>{{user.display_name}}</h5>
+    <span>@{{user.user_handle}}
+      <form action="/delete_account/{{user.id}}" method="POST">
+        <button type="submit"><i class="material-icons">delete</i></button>
+      </form>
+    </span>
+    {% if current_user != user %}
+      {% if current_user.is_authenticated %}
+        {% if current_user.is_following(user) %}
+          <a href="/follow/{{user.id}}"><i class="material-icons">people</i></a>
+        {% else %}
+          <a href="/follow/{{user.id}}"><i class="material-icons">people_outline</i></a>
+        {% endif %}
+      {%endif%}
+   {%endif%} 
+    <div class="biography">
+      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+        Nesciunt saepe optio quia debitis facere placeat soluta ab sint voluptates quos
+        vero accusantium temporibus quod doloremque,
+        facilis nam rerum adipisci dicta!
+      </p>
+    </div>
+  </div>
+  <div class="profile_tabs">
+    <div class="row">
+      <ul class="tabs">
+        <li class="tab col s3"><a class="active" href="#tweets">Tweets</a></li>
+        <li class="tab col s3"><a href="#liked_tweets">Likes</a></li>
+        <li class="tab col s3"><a href="#media">Media</a></li>
+      </ul>
+
+      <div id="tweets" class="col s12">
+        <!-- user = <user_handle> -->
+        {% for tweet in user.tweets %}
+        <div class="row">
+          <div class="col s12 m6">
+            <div class="card blue-grey darken-1">
+              <div class="card-content white-text">
+                <span class="card-title"><img id="tweet_profile_picture" src="../static/{{user.profile_picture_url}}">
+                  {{tweet.owner.display_name}}
+                  <form action="/delete_tweet/{{tweet.id}}" method="POST">
+                    <button type="submit"><i class="material-icons">delete</i></button>
+                  </form>
+                </span>
+                <span style="color: lightcyan;">@{{tweet.owner.user_handle}}</span>
+                <p>{{tweet.text}}</p>
+              </div>
+              <div class="card-action">
+                <a><i class="material-icons">reply</i></a>
+                <a><i class="material-icons">repeat</i></a>
+
+                {% if user.has_liked_tweet(tweet) %}
+                <a href="{{ url_for('tweet_related.like_tweet', tweet_id=tweet.id, action='unlike') }}"><i
+                    class="material-icons">favorite</i><span>{{tweet.likes.count()}}</span></a>
+                {% else %}
+                <a href="{{ url_for('tweet_related.like_tweet', tweet_id=tweet.id, action='like') }}"><i
+                    class="material-icons">favorite_border</i><span>{{tweet.likes.count()}}</span></a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        {%endfor%}
+      </div>
+      <div id="liked_tweets" class="col s12">
+        {% for tweet in liked %}
+        <div class="row">
+          <div class="col s12 m6">
+            <div class="card blue-grey darken-1">
+              <div class="card-content white-text">
+                <span class="card-title"><img id="tweet_profile_picture"
+                    src="../static/{{tweet.tweet.owner.profile_picture_url}}"> {{tweet.tweet.owner.display_name}}
+                  <form action="/delete_tweet/{{tweet.id}}" method="POST">
+                    <button type="submit"><i class="material-icons">delete</i></button>
+                  </form>
+                </span>
+                <span style="color: lightcyan;">@{{tweet.tweet.owner.user_handle}}</span>
+                <p>{{tweet.tweet.text}}</p>
+              </div>
+              <div class="card-action">
+                <a><i class="material-icons">reply</i></a>
+                <a><i class="material-icons">repeat</i></a>
+                {% if user.has_liked_tweet(tweet.tweet) %}
+                <a href="{{ url_for('tweet_related.like_tweet', tweet_id=tweet.tweet.id, action='unlike') }}"><i
+                    class="material-icons">favorite</i><span>{{tweet.tweet.likes.count()}}</span></a>
+                {% else %}
+                <a href="{{ url_for('tweet_related.like_tweet', tweet_id=tweet.tweet.id, action='like') }}"><i
+                    class="material-icons">favorite_border</i><span>{{tweet.tweet.likes.count()}}</span></a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        {%endfor%}
+      </div>
+      <div id="media" class="col s12">
+        <h5>media</h5>
+        <!-- {% for media in user_media %} -->
+        <!-- fill with tweet card design -->
+        <!-- {%endfor%} -->
+      </div>
+    </div>
+  </div>
+
+
+  <!-- MaterializeCSS tabs javascript activation -->
+  <script>
     window.addEventListener("DOMContentLoaded", event => {
-        const options = {
-          duration: 300,
-          onShow: null,
-          swipeable: false,
-          responsiveThreshold: Infinity
-        };
-      
-        const tabsContainer = document.querySelector(".tabs");
-        M.Tabs.init(tabsContainer, options);
-    })
-</script>
+      const options = {
+        duration: 300,
+        onShow: null,
+        swipeable: false,
+        responsiveThreshold: Infinity
+      };
 
-{%endblock%}
+      const tabsContainer = document.querySelector(".tabs");
+      M.Tabs.init(tabsContainer, options);
+    })
+  </script>
+  <script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal 
+    btn.onclick = function () {
+      modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+      modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  </script>
+
+  <!-- remaining characters allowed for a tweet -->
+  <script>
+    $(document).ready(function () {
+      var text_max = 140;
+      $('#textarea_feedback').html(text_max + ' characters remaining');
+
+      $('#tweet_input').keyup(function () {
+        var text_length = $('#tweet_input').val().length;
+        var text_remaining = text_max - text_length;
+
+        $('#textarea_feedback').html(text_remaining + ' characters remaining');
+      });
+    });
+
+  </script>
+
+  {%endblock%}
