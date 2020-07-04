@@ -69,7 +69,7 @@ def logout():
     return redirect(url_for('main.index'))
 
 
-@auth.route('/delete_account/<user_id>', methods=["POST"])
+@auth.route('/delete_account/<user_id>')
 @login_required
 def delete_account(user_id):
     target_user = User.query.filter_by(id=user_id).first()

@@ -33,7 +33,7 @@ def view_tweet_details(tweet_id):
     return render_template('tweet_detail.html', tweet=target_tweet, owner=tweet_owner)
 
 
-@tweet_related.route('/delete_tweet/<tweet_id>', methods=["POST"])
+@tweet_related.route('/delete_tweet/<tweet_id>')
 @login_required
 def delete_tweet(tweet_id):
     to_delete = Tweet.query.filter_by(id=tweet_id).first()

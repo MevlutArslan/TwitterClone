@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 from . import db
 import os
-from .models import User, Tweet, LikeTweet
+from .models import User, Tweet, LikeTweet, followers
 # from sqlalchemy import desc
 
 main = Blueprint('main', __name__)
@@ -46,7 +46,9 @@ def user_profile(user_handle):
     target_user = User.query.filter_by(user_handle=user_handle).first()
     liked_tweets = LikeTweet.query.filter_by(liked_by=target_user.id).all()
 
-    return render_template('profile.html', user=target_user, liked=liked_tweets, current_user=current_user)
+    follower_count = db.session.query(followers).filter_by(followed_id=target_user.id).count()
+
+    return render_template('profile.html', user=target_user, liked=liked_tweets, current_user=current_user, follower_count=follower_count)
 
 
 @main.route('/follow/<int:user_id>')
